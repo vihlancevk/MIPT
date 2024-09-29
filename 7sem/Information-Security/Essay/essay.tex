@@ -1,0 +1,107 @@
+\documentclass{article}
+
+\usepackage{cmap}
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+
+\usepackage{indentfirst}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{custom-green}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{blue},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{custom-green},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage[unicode, pdftex]{hyperref}
+
+\begin{document}
+
+	\begin{titlepage}
+		Обзор избранных уязвимостей в безопасности python программ.
+	\end{titlepage}
+
+	\section{Введение.}
+		\subsection{Вступление.}
+			...
+		\subsection{Постановка проблемы (что хотел сказать автор, какую проблему он затрагивает).}
+            ...
+		\subsection{Обрисовка проблемы, её проблемы и актуальность).}
+            ...
+		\subsection{Обрисовка проблемы, её аспекты и актуальность.}
+            ...
+
+	\newpage
+
+	\section{Основная часть.}
+		\subsection{[CWE-78].}
+			...
+
+		\subsection{[CWE-377]}
+			...
+
+		\subsection{Избыточные права доступа для критического ресурса[CWE-732].}
+			Если ресурс имеет права доступа больше, чем нужно для нормального исполнения программы, то это может привести к раскрытию конфиденциальной информации или несанкционированному изменению этого ресурса. Это особенно опасно, когда ресурс связан с конфигурацией программы, ее выполнением или конфиденциальными данными пользователей.
+			\subsubsection{Пример 1.}\label{example-1}
+				Приведённый ниже код устанавливает маску режима создания пользовательских файлов (umask) процесса равной нулю, создаёт файл и записывает в него строку ``Hello, world!''.
+
+				\begin{lstlisting}
+# umask.py
+import os
+
+
+os.umask(0)
+
+with open('hello.out', 'w') as f:
+	f.write('Hello, world!');
+				\end{lstlisting}
+
+				\par После его исполнения на UNIX системе, результат использования команды `ls -l' может быть следующим:
+
+				\begin{lstlisting}
+-rw-rw-rw- 1 <name> <name> 13 Sep 22 11:39 hello.out
+				\end{lstlisting}
+
+				\par Строка ``rw-rw-rw-'' указывет на то, что владелец, группа и все пользователи могут читать и редактировать этот файл.
+
+			\subsubsection{Пример 2.}
+				Рассмотрим стандартный процесс создания файла.
+
+				\begin{lstlisting}
+# without-chmod.py
+with open('hello.out', 'w') as f:
+    f.write('Hello, world!');
+                \end{lstlisting}
+
+				\par Файл `hello.out' будет иметь параметры доступа ``rw-rw-r--''. Это значит, что сторонние пользователи не могут его редактировать.
+
+				\par Теперь добавим несколько дополнительных строк кода.
+
+				\begin{lstlisting}
+# with-chmod.py
+with open('hello.out', 'w') as f:
+    f.write('Hello, world!');
+
+from os import chmod
+chmod('hello.out', 0o666)
+                \end{lstlisting}
+
+				\par После исполнения данного кода на UNIX системе, результат команды `ls -l' будет другим: ``rw-rw-rw-''. Это приводит нас к той же проблеме, что и в \ref{example-1}.
+
+\end{document}
