@@ -1,7 +1,6 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "matrix/matrix.h"
 
 void custom_free(int* left_matrix, int* right_matrix, int* transposed_right_matrix, int* result_matrix) {
@@ -41,15 +40,18 @@ int main(int argc, char** argv) {
         print_square_matrix(n, transposed_right_matrix);
     #endif
 
-	int* result_matrix = (int*) calloc(n*n, sizeof(int)); 
+	int* result_matrix = (int*) calloc(n*n, sizeof(int));
+	if (result_matrix == 0) {
+		return -1;
+	}
 	
-	time_t t0 = time(0);
+	double start = omp_get_wtime();
 
-	#pragma omp parallel for collapse(3)
+	#pragma omp parallel for
 	for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
+			int* c_ij = result_matrix + n * i + j;
             for (int k = 0; k < n; k++) {
-				int* c_ij = result_matrix + n * i + j;
 				int a_ik = *(left_matrix + n * i + k);
 				int b_jk = *(transposed_right_matrix + n * j + k);
 				*c_ij += a_ik * b_jk;
@@ -57,8 +59,8 @@ int main(int argc, char** argv) {
         }
     }
 
-	time_t t1 = time(0);
-    double time_in_seconds = difftime(t1, t0);
+	double end = omp_get_wtime();
+    double time_in_seconds = end - start;
     printf("time: %f\n", time_in_seconds); 
 
 	#ifdef DEBUG

@@ -14,7 +14,9 @@ int* read_matrix(int n, int m, char* file_name) {
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			int* i_j = matrix + n * i + j;
-			fscanf(pf, "%d", i_j);
+			if (fscanf(pf, "%d", i_j) != 1) {
+				printf("Error during matrix reading.\n");
+			}
 		}
 	}
 
