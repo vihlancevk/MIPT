@@ -16,4 +16,4 @@ if __name__ == '__main__':
 		for i in range(n):
 			for j in range(n):
 				number: int = randint(low_bound, high_bound)
-				f.write(str(number) + ' ' if j < n - 1 else '')
+				f.write(str(number) + ' ')
