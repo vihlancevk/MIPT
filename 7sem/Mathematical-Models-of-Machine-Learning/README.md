@@ -1,1 +1,3 @@
-GitHub: https://github.com/andriygav/MachineLearningSeminars
+GitHub:
+	https://github.com/andriygav/MachineLearningSeminars
+
