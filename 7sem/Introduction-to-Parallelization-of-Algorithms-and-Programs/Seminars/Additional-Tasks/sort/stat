@@ -1,0 +1,16 @@
+size=1 << 27
+
+s.c:
+task_size=-1,      time=27.744815;
+
+p.c:
+task_size=1024,    time=15.042645;
+task_size=16384,   time=14.934126;
+task_size=262144,  time=14.863771; - YES
+task_size=4194304, time=15.500431;
+
+p-1.c:
+task_size=1024,    time=8.241044;
+task_size=16384,   time=8.158218; - YES
+task_size=262144,  time=8.190217;
+task_size=4194304, time=8.273987;

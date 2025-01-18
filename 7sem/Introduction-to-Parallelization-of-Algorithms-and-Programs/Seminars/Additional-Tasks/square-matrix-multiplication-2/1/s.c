@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../../square-matrix-multiplication/matrix/matrix.h"
 
-#define N 1024
+#define N 4096
 
 // Function to horizontally sum all elements in a __m256i vector
 int horizontal_sum_avx2(__m256i vec) {

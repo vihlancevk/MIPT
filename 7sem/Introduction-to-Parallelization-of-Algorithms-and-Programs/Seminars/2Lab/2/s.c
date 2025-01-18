@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 	a = (double *) calloc(ISIZE*JSIZE, sizeof(double));
 	for (i = 0; i < ISIZE; i++) {
 		for (j = 0; j < JSIZE; j++) {
-			*(a + JSIZE*i + j) = 10*i + j;
+			a[JSIZE*i + j] = 10*i + j;
 		}
 	}
 
@@ -22,8 +22,7 @@ int main(int argc, char **argv) {
 
 	for (i = 0; i < ISIZE - 1; i++) {
 		for (j = 1; j < JSIZE; j++) {
-			double x = *(a + JSIZE*(i + 1) + (j - 1));
-			*(a + JSIZE*i + j) = sin(0.1 * x);
+			a[JSIZE*i + j] = sin(0.1 * a[JSIZE*(i + 1) + (j - 1)]);
 		}
 	}
 
@@ -34,11 +33,12 @@ int main(int argc, char **argv) {
 	ff = fopen("s.txt", "w");
 	for (i = 0; i < ISIZE; i++) {
 		for (j = 0; j < JSIZE; j++) {
-			fprintf(ff, "%f ", *(a + JSIZE*i + j));
+			fprintf(ff, "%f ", a[JSIZE*i + j]);
 		}
 		fprintf(ff, "\n");
 	}
 	fclose(ff);
 
+	free(a);
 	return 0;
 }

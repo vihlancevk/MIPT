@@ -19,3 +19,8 @@ variable-visibility-scopes:
 	gcc -fopenmp -o variable-visibility-scopes.sh variable-visibility-scopes.c
 	./variable-visibility-scopes.sh
 	rm variable-visibility-scopes.sh
+
+opencl:
+	gcc -O3 opencl.c /usr/lib/x86_64-linux-gnu/libOpenCL.so.1
+	./a.out
+	rm a.out

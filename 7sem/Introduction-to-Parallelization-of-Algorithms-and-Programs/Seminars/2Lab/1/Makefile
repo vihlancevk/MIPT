@@ -7,3 +7,8 @@ p:
 	mpicc -O3 -o a.out p.c -lm
 	mpirun -np 3 a.out
 	rm a.out
+
+p-1:
+	mpicc -O3 -o a.out p-1.c -lm
+	mpirun -np 4 a.out
+	rm a.out

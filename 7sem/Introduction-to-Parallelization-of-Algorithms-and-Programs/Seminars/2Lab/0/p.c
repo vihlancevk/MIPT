@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
 	double t_start = omp_get_wtime();
 
-	#pragma parallel for
+	#pragma omp parallel for
 	for (i = 0; i < ISIZE; i++) {
 		for (j = 0; j < JSIZE; j++) {
 			double *a_ij = a + JSIZE*i + j;
